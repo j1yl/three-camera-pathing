@@ -1,11 +1,4 @@
 import { useCameraPath } from "./useCameraPath";
-import type { ObjectType } from "./types";
-
-const OBJECTS: ObjectType[] = [
-  { id: 1, type: "box", position: [0, 0, 0] },
-  { id: 2, type: "sphere", position: [3, 0, -2] },
-  { id: 3, type: "cone", position: [-3, 0, 2] },
-];
 
 export const DebugMenu = () => {
   const {
@@ -19,41 +12,20 @@ export const DebugMenu = () => {
   } = useCameraPath();
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: 10,
-        right: 10,
-        background: "rgba(30,30,30,0.85)",
-        color: "#fff",
-        fontSize: 12,
-        padding: "8px 14px",
-        borderRadius: 8,
-        zIndex: 100,
-        fontFamily: "monospace",
-        maxWidth: 400,
-        maxHeight: "80vh",
-        overflowY: "auto",
-      }}
-    >
-      <div style={{ fontWeight: "bold", marginBottom: 8 }}>Camera Control</div>
+    <div className="fixed top-12 right-2 bg-white text-black text-xs p-4 z-50 max-w-96 max-h-[40vh] overflow-y-auto shadow-lg">
       <div>Position: {cameraPos.map((n) => n.toFixed(2)).join(", ")}</div>
       <div>Target: {cameraTarget.map((n) => n.toFixed(2)).join(", ")}</div>
       <div>Scroll: {scroll.toFixed(4)}</div>
-
-      <div style={{ marginTop: 8, fontWeight: "bold" }}>Interpolation:</div>
-      <div>Easing: {easingType}</div>
+      <div className="mt-2">Easing: {easingType}</div>
       <div>Speed: {interpolationSpeed.toFixed(2)}</div>
-
       {debugCameraInfo && (
-        <>
-          <div style={{ marginTop: 8, fontWeight: "bold" }}>Camera Info:</div>
+        <div className="mt-2">
           <div>
             LookAt: [{debugCameraInfo.lookAt.x.toFixed(2)},{" "}
             {debugCameraInfo.lookAt.y.toFixed(2)},{" "}
             {debugCameraInfo.lookAt.z.toFixed(2)}]
           </div>
-          <div>
+          <div style={{ marginBottom: 2 }}>
             Up: [{debugCameraInfo.up.x.toFixed(2)},{" "}
             {debugCameraInfo.up.y.toFixed(2)}, {debugCameraInfo.up.z.toFixed(2)}
             ]
@@ -61,33 +33,22 @@ export const DebugMenu = () => {
           {debugCameraInfo.fov !== undefined && (
             <div>FOV: {debugCameraInfo.fov.toFixed(2)}</div>
           )}
-        </>
+        </div>
       )}
-
-      <div style={{ marginTop: 8, fontWeight: "bold" }}>
-        Keyframes ({keyframes.length}):
-      </div>
-      {keyframes.map((kf, i) => (
-        <div key={i} style={{ marginLeft: 8, fontSize: 11 }}>
-          <div>
-            K{i}: pos[{kf.position.map((n) => n.toFixed(1)).join(", ")}] →
-            target[{kf.target.map((n) => n.toFixed(1)).join(", ")}]
+      <div className="mt-2">Keyframes: ({keyframes.length})</div>
+      <div>
+        {keyframes.map((kf, i) => (
+          <div key={i}>
+            <div className="text-[11px]">
+              <span className="text-red-500">{i}</span>: pos[
+              {kf.position.map((n) => n.toFixed(1)).join(", ")}] → target[
+              {kf.target.map((n) => n.toFixed(1)).join(", ")}]
+            </div>
+            <div className="text-[10px] opacity-80">
+              easing: {kf.easing || "easeInOut"}, duration: {kf.duration || 2}s
+            </div>
           </div>
-          <div style={{ marginLeft: 8, fontSize: 10, opacity: 0.8 }}>
-            easing: {kf.easing || "easeInOut"}, duration: {kf.duration || 2}s
-          </div>
-        </div>
-      ))}
-
-      <div style={{ marginTop: 8, fontWeight: "bold" }}>Objects:</div>
-      {OBJECTS.map((obj) => (
-        <div key={obj.id}>
-          {obj.type}: [{obj.position.map((n) => n.toFixed(2)).join(", ")}]
-        </div>
-      ))}
-
-      <div style={{ marginTop: 8, fontSize: 10, opacity: 0.7 }}>
-        Press 'D' to toggle debug mode
+        ))}
       </div>
     </div>
   );

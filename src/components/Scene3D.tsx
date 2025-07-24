@@ -53,21 +53,6 @@ export const Scene3D = ({
         position={[0, 0, 0]}
         size={[1, 1]}
       />
-
-      <mesh position={[0, 0, 4]}>
-        <sphereGeometry args={[1, 32, 32]} />
-        <meshPhysicalMaterial
-          color="red"
-          roughness={0.5}
-          metalness={0.5}
-          clearcoat={1}
-          clearcoatRoughness={0.5}
-          transmission={1}
-          opacity={0.2}
-          transparent={true}
-        />
-      </mesh>
-
       <EffectComposer>
         <Bloom
           intensity={0.1}
